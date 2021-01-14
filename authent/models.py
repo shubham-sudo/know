@@ -27,6 +27,7 @@ class CustomUserManager(BaseUserManager):
         other_fields.setdefault('is_superuser', True)
         return self.create_user(first_name, last_name, email, password, **other_fields)
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(_('user name'), max_length=150, blank=True)
     first_name = models.CharField(_('first name'), max_length=150)
@@ -60,3 +61,29 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Address(models.Model):
+    address1 = models.CharField('Address-1', max_length=120)
+    address2 = models.CharField('Address-2', max_length=120)
+    city = models.ForeignKey('City', on_delete=models.CASCADE)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+
+
+class City(models.Model):
+    name = models.CharField(max_length=120)
+    state = models.ForeignKey('State', on_delete=models.CASCADE)
+
+
+class State(models.Model):
+    name = models.CharField(max_length=120, primary_key=True)
+
+
+class Phone(models.Model):
+    number = models.IntegerField()
+    phonetag = models.ForeignKey('PhoneTag', on_delete=models.DO_NOTHING)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+
+
+class PhoneTag(models.Model):
+    name = models.CharField(max_length=20, primary_key=True)
