@@ -7,14 +7,13 @@ from django.utils.translation import gettext as _
 
 
 class CustomUserManager(BaseUserManager):
-    
     def create_user(self, first_name, last_name, email, password=None, **other_fields):
         """Create and save users"""
-        username = ''
-        other_fields.setdefault('first_name', first_name)
-        other_fields.setdefault('last_name', last_name)
+        username = ""
+        other_fields.setdefault("first_name", first_name)
+        other_fields.setdefault("last_name", last_name)
         if not email:
-            raise ValueError('This given email must be set')
+            raise ValueError("This given email must be set")
         email = self.normalize_email(email)
         username = self.model.normalize_username(username)
         user = self.model(email=email, **other_fields)
@@ -23,56 +22,56 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, first_name, last_name, email, password=None, **other_fields):
-        other_fields.setdefault('is_staff', True)
-        other_fields.setdefault('is_superuser', True)
+        other_fields.setdefault("is_staff", True)
+        other_fields.setdefault("is_superuser", True)
         return self.create_user(first_name, last_name, email, password, **other_fields)
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(_('user name'), max_length=150, blank=True)
-    first_name = models.CharField(_('first name'), max_length=150)
-    last_name = models.CharField(_('last name'), max_length=150)
+    username = models.CharField(_("user name"), max_length=150, blank=True)
+    first_name = models.CharField(_("first name"), max_length=150)
+    last_name = models.CharField(_("last name"), max_length=150)
     email = models.EmailField(
-        _('email'),
+        _("email"),
         unique=True,
         error_messages={
-            'unique': _("A user with that email already exists."),
+            "unique": _("A user with that email already exists."),
         },
     )
     is_staff = models.BooleanField(
-        _('staff status'),
+        _("staff status"),
         default=False,
-        help_text=_('Designates whether the user can log into this admin site.'),
+        help_text=_("Designates whether the user can log into this admin site."),
     )
     is_active = models.BooleanField(
-        _('active'),
+        _("active"),
         default=False,
         help_text=_(
-            'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
+            "Designates whether this user should be treated as active. " 
+            "Unselect this instead of deleting accounts."
         ),
     )
-    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["first_name", "last_name"]
 
     def __str__(self):
         return self.email
 
 
 class Address(models.Model):
-    address1 = models.CharField('Address-1', max_length=120)
-    address2 = models.CharField('Address-2', max_length=120)
-    city = models.ForeignKey('City', on_delete=models.CASCADE)
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    address1 = models.CharField(_("Address-1"), max_length=120)
+    address2 = models.CharField(_("Address-2"), max_length=120)
+    city = models.ForeignKey("City", on_delete=models.CASCADE)
+    user = models.ForeignKey("CustomUser", on_delete=models.CASCADE)
 
 
 class City(models.Model):
     name = models.CharField(max_length=120)
-    state = models.ForeignKey('State', on_delete=models.CASCADE)
+    state = models.ForeignKey("State", on_delete=models.CASCADE)
 
 
 class State(models.Model):
@@ -81,8 +80,8 @@ class State(models.Model):
 
 class Phone(models.Model):
     number = models.IntegerField()
-    phonetag = models.ForeignKey('PhoneTag', on_delete=models.DO_NOTHING)
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    phonetag = models.ForeignKey("PhoneTag", on_delete=models.DO_NOTHING)
+    user = models.ForeignKey("CustomUser", on_delete=models.CASCADE)
 
 
 class PhoneTag(models.Model):

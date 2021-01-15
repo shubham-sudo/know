@@ -7,19 +7,18 @@ from .models import CustomUser
 
 
 class CustomUserChangeForm(UserChangeForm):
-
     class Meta:
         model = CustomUser
-        fields = ('username', 'first_name', 'last_name')
+        fields = ("username", "first_name", "last_name")
 
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(
-        label=_('Email'),
-        widget=forms.TextInput(attrs={'autofocus': True}),
-        help_text=_('Enter emial address to register'),
+        label=_("Email"),
+        widget=forms.TextInput(attrs={"autofocus": True}),
+        help_text=_("Enter emial address to register"),
     )
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'first_name', 'last_name')
+        fields = ("email", "first_name", "last_name")
