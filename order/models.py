@@ -1,7 +1,7 @@
 from django.db import models
 
 from authent.models import CustomUser, Address
-from authent.validators import check_min
+from authent.validators import check_min, is_ip_address
 from product.models import Product
 
 ## order data models ##
@@ -12,7 +12,7 @@ class Order(models.Model):
     quantity = models.IntegerField(validators=[check_min])
     cost = models.FloatField(validators=[check_min])
     timestamp = models.DateTimeField(_("Time Stamp"), default=timezone.now)
-    ip = model.???  # (add IP field here)
+    ip = model.CharField(_("Ip Address"), max_length=15)
     browser = models.ForeignKey("Browser")
     system = models.ForeignKey("System")
     payment_mode = models.ForeignKey("PaymentMode")
