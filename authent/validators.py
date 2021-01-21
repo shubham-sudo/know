@@ -11,6 +11,9 @@ def check_min(value):
 
 
 def is_ip_address(value):
+    """
+    Soft validation for Ip address
+    """
     not_valid = "IP address not valid"
     ip = value.split('.')
     if len(ip) != 4:
